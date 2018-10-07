@@ -7,22 +7,22 @@ import { AngularFireModule } from 'angularfire2';
 import {environment} from '../environments/environment';
 import {SweetAlert2Module} from '@toverux/ngx-sweetalert2';
 import {AppRoutingModule} from './app.routing.module';
-import {AuthGuard} from '../guards/auth.guard';
-import {DashboardPageComponent} from '../pages/dashboard-page/dashboard-page.component';
 import {LoggedInTemplateComponent} from '../components/logged-in-template/logged-in-template.component';
 import {LoggedOutTemplateComponent} from "../components/logged-out-template/logged-out-template.component";
 import {PageNotFound} from "../pages/404-page/app-page-not-found.component";
 import {AuthServiceProvider} from "../services/auth-service";
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import {ReserveRoomPageComponent} from "../pages/reserve-room-page/reserve-room-page.component";
+import {UserCanAdminGuard} from "../guards/user-can-admin.guard";
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        DashboardPageComponent,
         LoggedInTemplateComponent,
         LoggedOutTemplateComponent,
-        PageNotFound
+        PageNotFound,
+        ReserveRoomPageComponent
     ],
     imports: [
         BrowserModule,
@@ -40,7 +40,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
         })
     ],
     providers: [
-        AuthGuard,
+        UserCanAdminGuard,
         AuthServiceProvider
     ],
     bootstrap: [AppComponent]

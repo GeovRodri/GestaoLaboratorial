@@ -1,2 +1,2 @@
-<app-logged-in-template *ngIf="logged"></app-logged-in-template>
-<app-logged-out-template *ngIf="!logged"></app-logged-out-template>
+<app-logged-in-template *ngIf="!isLoading && logged"></app-logged-in-template>
+<app-logged-out-template *ngIf="!isLoading && !logged"></app-logged-out-template>
