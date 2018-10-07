@@ -1,80 +1,52 @@
-<header id="topnav">
-    <nav class="navbar-custom">
-        <div class="container-fluid">
-            <ul class="list-unstyled topbar-right-menu float-right mb-0">
-                <li class="dropdown notification-list">
-                    <!-- Mobile menu toggle-->
-                    <a class="navbar-toggle nav-link">
-                        <div class="lines">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </a>
-                    <!-- End mobile menu toggle-->
-                </li>
-            </ul>
-            <ul class="list-inline menu-left mb-0">
-                <li class="float-left">
-                    <a routerLink="/" class="logo">
-                        <span class="logo-lg">
-                            <img src="assets\images\logo.png" alt="" height="20"> </span>
-                        <span class="logo-sm">
-                            <img src="assets\images\logo_sm.png" alt="" height="28">
-                        </span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!-- end topbar-main -->
-    <div class="topbar-menu">
-        <div class="container-fluid">
-            <div id="navigation">
-                <!-- Navigation Menu-->
-                <ul class="navigation-menu">
-                    <li class="has-submenu">
-                        <a routerLink="/">
-                            <i class="mdi mdi-view-dashboard"></i>Dashboard</a>
-                    </li>
-                </ul>
-                <!-- End navigation menu -->
-                <div class="clearfix"></div>
-            </div>
-            <!-- end #navigation -->
-        </div>
-        <!-- end container -->
-    </div>
-    <!-- end navbar-custom -->
-</header>
-<!-- End Navigation Bar-->
-<div class="wrapper">
-    <div class="container-fluid">
-        <!-- Page title box -->
-        <div class="page-title-alt-bg"></div>
-        <div class="page-title-box">
-            <ol class="breadcrumb float-right">
-                <li class="breadcrumb-item">
-                    <a routerLink="/">Greeva</a>
-                </li>
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-            <h4 class="page-title">Dashboard</h4>
-        </div>
-        <!-- End page title box -->
+<section>
+    <div class="container">
         <div class="row">
-            <router-outlet></router-outlet>
-        </div>
-    </div>
-</div>
-<!-- end wrapper -->
+            <div class="col-12">
+                <div class="wrapper-page">
+                    <div class="account-pages">
+                        <div class="account-box"><!-- Logo box-->
+                            <div class="account-logo-box">
+                                <h2 class="text-uppercase text-center">
+                                    <a href="index.html" class="text-success">
+                                        <span>
+                                            <img src="assets\images\logo.jpg" alt="" height="90">
+                                        </span>
+                                    </a>
+                                </h2>
+                            </div>
+                            <div class="account-content">
+                                <div *ngIf="error" class="alert alert-danger bg-danger text-white fade show" role="alert">
+                                    {{ error }}
+                                </div>
+                                <form [formGroup]="loginFormGroup" (submit)="login(loginFormGroup.value)">
+                                    <div class="form-group mb-3">
+                                        <label for="email" class="font-weight-medium">Email</label>
+                                        <input formControlName="email" class="form-control" type="email" id="email" required placeholder="Insira seu email">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="password" class="font-weight-medium">Senha</label>
+                                        <input formControlName="password" class="form-control" type="password" required id="password" placeholder="Insira sua senha">
+                                    </div>
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 text-center">2018 © Greeva. - Coderthemes.com</div>
+                                    <div class="form-group row text-center">
+                                        <div class="col-12">
+                                            <button class="btn btn-block btn-success waves-effect waves-light"
+                                                    [disabled]="!loginFormGroup.valid" type="submit">Entrar</button>
+                                        </div>
+                                    </div>
+                                </form><!-- end form -->
+                            </div>
+                            <!-- end account-content -->
+                        </div><!-- end account-box -->
+                    </div>
+                    <!-- end account-page-->
+                </div>
+                <!-- end wrapper-page -->
+            </div>
+            <!-- end col -->
         </div>
+        <!-- end row -->
     </div>
-</footer>
-<!-- End Footer -->
+    <!-- end container -->
+</section>
+<!-- END HOME -->

@@ -5,21 +5,22 @@ import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/map';
+import {reject} from "q";
+import * as firebase from "firebase";
 
 @Injectable()
 export class AuthServiceProvider {
 
     authstate: any;
 
-    userObservable: Observable<string>;
+    userObservable: Observable<firebase.User>;
     userObservers: Array<Subscription> = [];
 
     constructor(private afDb: AngularFireDatabase, private afAuth: AngularFireAuth) {
 
         afAuth.authState.subscribe(authState => {
             this.authstate = authState;
-            const user = (this.authstate != null) ? this.authstate.email : null;
-            this.informLoggedUserToObservers(user);
+            this.informLoggedUserToObservers(authState);
         });
 
         this.userObservable = Observable.create((observer) => {
@@ -35,6 +36,16 @@ export class AuthServiceProvider {
         return this.userObservable;
     }
 
+    public login(mail: string, password: string) {
+        return new Promise((resolve, reject) => {
+            this.afAuth.auth.signInWithEmailAndPassword(mail, password).then((user) => {
+                resolve();
+            }).catch((error) => {
+                reject(error)
+            });
+        });
+    }
+
     logout(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.afAuth.auth.signOut().then(() => {
@@ -46,26 +57,9 @@ export class AuthServiceProvider {
         });
     }
 
-    private informLoggedUserToObservers(userId: string): void {
+    private informLoggedUserToObservers(user: firebase.User): void {
         for (const observer of this.userObservers) {
-            (<any>observer).next(userId);
+            (<any>observer).next(user);
         }
     }
-
-    /*loginWithPassword(phoneNumber: string, password: string): Promise<any> {
-      return new Promise((resolve, reject) => {
-        const email = phoneNumber + '@login.stayapp.com.br';
-        this.afAuth.auth.signInWithEmailAndPassword(email, password).then(result => {
-          this.subscribeUserFb(result);
-          const loggedUser = Utils.adjustPhoneNumber(phoneNumber);
-          if (loggedUser != null) {
-            this.userService.refreshUserLoginToken(loggedUser);
-          }
-          resolve(result);
-
-        }).catch(error => {
-          reject(error);
-        });
-      });
-    }*/
 }
