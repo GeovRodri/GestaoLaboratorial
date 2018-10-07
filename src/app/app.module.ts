@@ -14,6 +14,7 @@ import {AuthServiceProvider} from "../services/auth-service";
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import {ReserveRoomPageComponent} from "../pages/reserve-room-page/reserve-room-page.component";
 import {UserCanAdminGuard} from "../guards/user-can-admin.guard";
+import {LaboratoriesPageComponent} from "../pages/laboratories/laboratories-page.component";
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {UserCanAdminGuard} from "../guards/user-can-admin.guard";
         LoggedInTemplateComponent,
         LoggedOutTemplateComponent,
         PageNotFound,
-        ReserveRoomPageComponent
+        ReserveRoomPageComponent,
+        LaboratoriesPageComponent
     ],
     imports: [
         BrowserModule,
