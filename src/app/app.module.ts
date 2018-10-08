@@ -15,6 +15,9 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import {ReserveRoomPageComponent} from "../pages/reserve-room-page/reserve-room-page.component";
 import {UserCanAdminGuard} from "../guards/user-can-admin.guard";
 import {LaboratoriesPageComponent} from "../pages/laboratories/laboratories-page.component";
+import {LaboratoryPageComponent} from "../pages/laboratory/laboratory-page.component";
+import {LaboratoryService} from "../services/laboratory-service";
+import {ToastrServiceProvider} from "../services/toastr-service";
 
 
 @NgModule({
@@ -24,7 +27,8 @@ import {LaboratoriesPageComponent} from "../pages/laboratories/laboratories-page
         LoggedOutTemplateComponent,
         PageNotFound,
         ReserveRoomPageComponent,
-        LaboratoriesPageComponent
+        LaboratoriesPageComponent,
+        LaboratoryPageComponent
     ],
     imports: [
         BrowserModule,
@@ -43,7 +47,9 @@ import {LaboratoriesPageComponent} from "../pages/laboratories/laboratories-page
     ],
     providers: [
         UserCanAdminGuard,
-        AuthServiceProvider
+        AuthServiceProvider,
+        LaboratoryService,
+        ToastrServiceProvider
     ],
     bootstrap: [AppComponent]
 })
