@@ -86,8 +86,13 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr *ngFor="let hour of operatingHours[day.value]">
+                                    <tr *ngFor="let hour of operatingHours[day.value]; let i = index">
                                         <td>{{ hour.startTime + ' - ' + hour.endTime }}</td>
+                                        <td>
+                                            <a (click)="removeItem(day, i)">
+                                                <i class="mdi mdi-delete" style="color: red;"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -96,5 +101,9 @@
 
                     <button type="submit" class="btn btn-primary" [disabled]="!formGroup.valid">Salvar</button>
                 </form>
-            </div><!-- end card-box --></div><!-- end col --></div>
+            </div>
+            <!-- end card-box -->
+        </div>
+        <!-- end col -->
+    </div>
 </div>

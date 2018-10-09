@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LaboratoryService} from "../../services/laboratory-service";
 import {ToastrServiceProvider} from "../../services/toastr-service";
+import swal from "sweetalert2";
 
 @Component({
   selector: 'app-laboratory-page',
@@ -22,12 +23,6 @@ export class LaboratoryPageComponent {
     constructor(private activeRoute: ActivatedRoute, private formBuilder: FormBuilder,
                 private laboratoryService: LaboratoryService, private toastrService: ToastrServiceProvider,
                 private router: Router) {
-
-        this.activeRoute.params.subscribe(params => {
-            if (params.hasOwnProperty("id")) {
-                this.id = params['id'];
-            }
-        });
 
         this.formGroup = formBuilder.group({
             'name': ['', [Validators.required]],
@@ -71,12 +66,31 @@ export class LaboratoryPageComponent {
                 title: 'Domingo'
             }
         ]);
+
+        this.activeRoute.params.subscribe(params => {
+            if (params.hasOwnProperty("id")) {
+                this.id = params['id'];
+
+                this.laboratoryService.getLaboratory(this.id).then((laboratory) => {
+                    this.categories = laboratory.categories;
+                    this.operatingHours = laboratory.operatingHours;
+
+                    this.formGroup.controls['name'].setValue(laboratory.name);
+                    this.formGroup.controls['haveDatashow'].setValue(laboratory.haveDatashow);
+                    this.formGroup.controls['haveComputer'].setValue(laboratory.haveComputer);
+                });
+            }
+        });
     }
 
     saveHour(data) {
         this.operatingHoursFormGroup.controls['dayOfWeek'].setValue("monday");
         this.operatingHoursFormGroup.controls['startTime'].setValue(0);
         this.operatingHoursFormGroup.controls['endTime'].setValue(0);
+
+        if (!this.operatingHours) {
+            this.operatingHours = {};
+        }
 
         if (!this.operatingHours[data.dayOfWeek]) {
             this.operatingHours[data.dayOfWeek] = [];
@@ -89,17 +103,37 @@ export class LaboratoryPageComponent {
     }
 
     saveLaboratory(data) {
-        if (!this.id) {
-            data.categories = this.categories;
-            data.operatingHours = this.operatingHours;
+        let promises = [];
+        data.categories = this.categories;
+        data.operatingHours = this.operatingHours;
 
-            this.laboratoryService.saveLaboratory(data).then(() => {
-                this.router.navigate(['/laboratories']).then(() => {
-                    this.toastrService.showSuccessToast('Laboratório salvo com sucesso!');
-                });
-            }).catch((error) => {
-                this.toastrService.showSuccessToast('Error ao salvar o laboratório!');
-            });
+        if (this.id) {
+            promises.push(this.laboratoryService.editLaboratory(this.id, data));
+        } else {
+            promises.push(this.laboratoryService.saveLaboratory(data));
         }
+
+        Promise.all(promises).then(() => {
+            this.router.navigate(['/laboratories']).then(() => {
+                this.toastrService.showSuccessToast('Laboratório salvo com sucesso!');
+            });
+        }).catch((error) => {
+            this.toastrService.showSuccessToast('Error ao salvar o laboratório!');
+        });
+    }
+
+    removeItem(day, index) {
+        swal({
+            text: 'Deseja realmente remover esse horário?',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não',
+        }).then((result) => {
+            if (result.value) {
+                this.operatingHours[day.value].splice(index, 1);
+            }
+        });
     }
 }
