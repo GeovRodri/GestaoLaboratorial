@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <!-- Page title box -->
+    <div class="page-title-alt-bg"></div>
+    <div class="page-title-box">
+        <ol class="breadcrumb float-right">
+            <li class="breadcrumb-item"><a routerLink="/laboratories">Laboratórios</a></li>
+            <li class="breadcrumb-item active">Laboratório</li>
+        </ol>
+        <h4 *ngIf="id" class="page-title">Alterar Laboratório</h4>
+        <h4 *ngIf="!id" class="page-title">Novo Laboratório</h4>
+    </div>
+    <!-- End page title box -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-box">
+
+                <form [formGroup]="formGroup" (submit)="saveLaboratory(formGroup.value)">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="name" class="col-form-label">Nome</label>
+                            <input type="text" class="form-control" id="name" placeholder="Nome" formControlName="name">
+                        </div>
+
+                        <div class="form-group col-md-3 align-self-end" style="padding-left: 1rem;">
+                            <div class="checkbox">
+                                <input id="haveComputer" type="checkbox" formControlName="haveComputer">
+                                <label for="haveComputer">Possui Computador</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-3 align-self-end">
+                            <div class="checkbox">
+                                <input id="haveDatashow" type="checkbox" formControlName="haveDatashow">
+                                <label for="haveDatashow">Possui Datashow</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="category" class="col-form-label">Categorias</label>
+                            <select multiple id="category" class="form-control" [(ngModel)]="categories" [ngModelOptions]="{standalone: true}">
+                                <option value="">Selecione uma categoria</option>
+                                <option value="informatica">Informatica</option>
+                                <option value="40 pessoas">40 pessoas</option>
+                                <option value="10 pessoas">10 pessoas</option>
+                                <option value="ciencia">Ciencia</option>
+                                <option value="fisica">Fisica</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h4 class="m-t-0 header-title" style="padding-top: 1rem;">Horários</h4>
+                    <div class="form-row" [formGroup]="operatingHoursFormGroup">
+                        <div class="form-group col-md-2">
+                            <label for="dayOfWeek" class="col-form-label">Dia da Semana</label>
+                            <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek">
+                                <option *ngFor="let day of daysOfWeek" value="{{ day.value }}">{{ day.title }}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label for="time" class="col-form-label">Horario Inicial</label>
+                            <input id="time" formControlName="startTime" class="form-control" type="time" name="time">
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label for="endTime" class="col-form-label">Horario Final</label>
+                            <input id="endTime" formControlName="endTime" class="form-control" type="time" name="time">
+                        </div>
+
+                        <div class="form-group align-self-end">
+                            <button type="button" class="btn btn-primary" (click)="saveHour(operatingHoursFormGroup.value)">Adicionar</button>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 1rem;">
+                        <div class="col" *ngFor="let day of daysOfWeek">
+                            <table class="table table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{day.title}}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let hour of operatingHours[day.value]">
+                                        <td>{{ hour.startTime + ' - ' + hour.endTime }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" [disabled]="!formGroup.valid">Salvar</button>
+                </form>
+            </div><!-- end card-box --></div><!-- end col --></div>
+</div>
