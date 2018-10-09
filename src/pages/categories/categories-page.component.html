@@ -1,0 +1,44 @@
+<div class="container-fluid">
+    <!-- Page title box -->
+    <div class="page-title-alt-bg"></div>
+    <div class="page-title-box">
+        <ol class="breadcrumb float-right">
+            <li class="breadcrumb-item active">Categorias</li>
+        </ol>
+        <h4 class="page-title">Categorias</h4>
+    </div>
+    <!-- End page title box -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-box">
+                <div class="header-title" style="text-align: right;">
+                    <button class="btn btn-primary" [routerLink]="['/category']">Nova Categoria</button>
+                </div>
+
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Categorias</th>
+                            <th style="text-align: right;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let category of categories">
+                            <td>{{ category.name }}</td>
+                            <td class="icons">
+                                <a [routerLink]="['/category', category.$key]">
+                                    <i class="mdi mdi-square-edit-outline"></i>
+                                </a>
+                                <a (click)="removeCategory(category)">
+                                    <i class="mdi mdi-delete"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- end card-box -->
+        </div>
+        <!-- end col -->
+    </div>
+</div>

@@ -5,12 +5,17 @@ import {ReserveRoomPageComponent} from "../pages/reserve-room-page/reserve-room-
 import {LaboratoriesPageComponent} from "../pages/laboratories/laboratories-page.component";
 import {UserCanAdminGuard} from "../guards/user-can-admin.guard";
 import {LaboratoryPageComponent} from "../pages/laboratory/laboratory-page.component";
+import {CategoriesPageComponent} from "../pages/categories/categories-page.component";
+import {CategoryPageComponent} from "../pages/category/category-page.component";
 
 export const ROUTES: Routes = [
     { path: '', component: ReserveRoomPageComponent },
     { path: 'laboratories', component: LaboratoriesPageComponent, canActivate: [UserCanAdminGuard] },
     { path: 'laboratory', component: LaboratoryPageComponent, canActivate: [UserCanAdminGuard] },
     { path: 'laboratory/:id', component: LaboratoryPageComponent, canActivate: [UserCanAdminGuard] },
+    { path: 'categories', component: CategoriesPageComponent, canActivate: [UserCanAdminGuard] },
+    { path: 'category', component: CategoryPageComponent, canActivate: [UserCanAdminGuard] },
+    { path: 'category/:id', component: CategoryPageComponent, canActivate: [UserCanAdminGuard] },
     { path: '**', component: PageNotFound }
 ];
 

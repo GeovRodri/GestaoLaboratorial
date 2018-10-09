@@ -18,6 +18,9 @@ import {LaboratoriesPageComponent} from "../pages/laboratories/laboratories-page
 import {LaboratoryPageComponent} from "../pages/laboratory/laboratory-page.component";
 import {LaboratoryService} from "../services/laboratory-service";
 import {ToastrServiceProvider} from "../services/toastr-service";
+import {CategoryService} from "../services/category-service";
+import {CategoriesPageComponent} from "../pages/categories/categories-page.component";
+import {CategoryPageComponent} from "../pages/category/category-page.component";
 
 
 @NgModule({
@@ -28,7 +31,9 @@ import {ToastrServiceProvider} from "../services/toastr-service";
         PageNotFound,
         ReserveRoomPageComponent,
         LaboratoriesPageComponent,
-        LaboratoryPageComponent
+        LaboratoryPageComponent,
+        CategoriesPageComponent,
+        CategoryPageComponent
     ],
     imports: [
         BrowserModule,
@@ -49,7 +54,8 @@ import {ToastrServiceProvider} from "../services/toastr-service";
         UserCanAdminGuard,
         AuthServiceProvider,
         LaboratoryService,
-        ToastrServiceProvider
+        ToastrServiceProvider,
+        CategoryService
     ],
     bootstrap: [AppComponent]
 })
