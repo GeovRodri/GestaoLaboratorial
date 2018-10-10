@@ -9,7 +9,7 @@ export class CategoryService {
 
     saveCategory(data): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.afDb.list('categories/').push(data).then(() => {
+            this.afDb.object('categories/' + data.name).set(true).then(() => {
                 resolve();
             });
         });
@@ -41,7 +41,7 @@ export class CategoryService {
         return this.afDb.object('categories/' + key).remove() ;
     }
 
-    editCategory(key, data): Promise<any> {
+    /*editCategory(key, data): Promise<any> {
         return this.afDb.object('categories/' + key).update(data);
-    }
+    }*/
 }

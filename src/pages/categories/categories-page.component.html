@@ -24,11 +24,11 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let category of categories">
-                            <td>{{ category.name }}</td>
+                            <td>{{ category.$key }}</td>
                             <td class="icons">
-                                <a [routerLink]="['/category', category.$key]">
+                                <!--<a [routerLink]="['/category', category.$key]">
                                     <i class="mdi mdi-square-edit-outline"></i>
-                                </a>
+                                </a>-->
                                 <a (click)="removeCategory(category)">
                                     <i class="mdi mdi-delete"></i>
                                 </a>

@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LaboratoryService} from "../../services/laboratory-service";
 import {ToastrServiceProvider} from "../../services/toastr-service";
 import swal from "sweetalert2";
+import {CategoryService} from "../../services/category-service";
 
 @Component({
   selector: 'app-laboratory-page',
@@ -19,10 +20,18 @@ export class LaboratoryPageComponent {
     public daysOfWeek: Array<any> = [];
 
     public categories: Array<any> = [];
+    public categoriesSelect: Array<any> = [];
 
     constructor(private activeRoute: ActivatedRoute, private formBuilder: FormBuilder,
                 private laboratoryService: LaboratoryService, private toastrService: ToastrServiceProvider,
-                private router: Router) {
+                private router: Router, private categoryService: CategoryService) {
+
+        this.categoryService.getCategories().then((results) => {
+            this.categoriesSelect = results;
+        }).catch((error) => {
+            console.log(error);
+            this.toastrService.showErrorToast('Error ao buscar as categorias!');
+        });
 
         this.formGroup = formBuilder.group({
             'name': ['', [Validators.required]],

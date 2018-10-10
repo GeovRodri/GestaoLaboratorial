@@ -27,7 +27,7 @@ export class CategoryPageComponent {
                 this.id = params['id'];
 
                 this.categoryService.getCategory(this.id).then((category) => {
-                    this.formGroup.controls['name'].setValue(category.name);
+                    this.formGroup.controls['name'].setValue(category.$key);
                 });
             }
         });
@@ -37,7 +37,7 @@ export class CategoryPageComponent {
         let promises = [];
 
         if (this.id) {
-            promises.push(this.categoryService.editCategory(this.id, data));
+            // promises.push(this.categoryService.editCategory(this.id, data));
         } else {
             promises.push(this.categoryService.saveCategory(data));
         }
