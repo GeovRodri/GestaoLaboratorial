@@ -5,7 +5,6 @@ import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/map';
-import {reject} from "q";
 import * as firebase from "firebase";
 
 @Injectable()
@@ -61,5 +60,15 @@ export class AuthServiceProvider {
         for (const observer of this.userObservers) {
             (<any>observer).next(user);
         }
+    }
+
+    public isAdmin() {
+        return new Promise((resolve, reject) => {
+            this.afDb.object('admins/' + this.authstate.uid).valueChanges().take(1).subscribe((result) => {
+                resolve(result);
+            }, (error) => {
+                reject(error);
+            });
+        });
     }
 }

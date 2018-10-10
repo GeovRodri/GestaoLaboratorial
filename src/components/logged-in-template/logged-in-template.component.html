@@ -7,6 +7,12 @@
                         <img src="assets\images\logo.png" alt="" height="70">
                     </a>
                 </li>
+
+                <li class="float-right p-1">
+                    <a (click)="logout()">
+                        <i class="dripicons-power"></i> <span>Logout</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -19,10 +25,10 @@
                     <li class="has-submenu">
                         <a routerLink="/"> <i class="mdi mdi-map-marker-radius"></i>Reservar</a>
                     </li>
-                    <li class="navigation-menu">
+                    <li class="navigation-menu" *ngIf="isAdmin">
                         <a routerLink="/laboratories"><i class="mdi mdi-home"></i>Laboratórios</a>
                     </li>
-                    <li class="navigation-menu">
+                    <li class="navigation-menu" *ngIf="isAdmin">
                         <a routerLink="/categories"><i class="mdi mdi-shape"></i>Categorias</a>
                     </li>
                 </ul>

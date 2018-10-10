@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { Component } from '@angular/core';
+import {AuthServiceProvider} from "../../services/auth-service";
 
 @Component({
   selector: 'app-logged-in-template',
@@ -8,7 +8,17 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class LoggedInTemplateComponent {
 
-    constructor() {
+    public isAdmin: boolean = false;
 
+    constructor(private authService: AuthServiceProvider) {
+        this.authService.isAdmin().then((isAdmin) => {
+            this.isAdmin = !!isAdmin;
+        }).catch((error) => {
+           console.log(error);
+        });
+    }
+
+    logout() {
+        this.authService.logout();
     }
 }
