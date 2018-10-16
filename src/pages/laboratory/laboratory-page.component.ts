@@ -5,6 +5,7 @@ import {LaboratoryService} from "../../services/laboratory-service";
 import {ToastrServiceProvider} from "../../services/toastr-service";
 import swal from "sweetalert2";
 import {CategoryService} from "../../services/category-service";
+import Utils from "../../utils/utils";
 
 @Component({
   selector: 'app-laboratory-page',
@@ -45,36 +46,7 @@ export class LaboratoryPageComponent {
             endTime: [0, [Validators.required]]
         });
 
-        this.daysOfWeek = this.daysOfWeek.concat([
-            {
-                value: 'monday',
-                title: 'Segunda Feira'
-            },
-            {
-                value: 'tuesday',
-                title: 'Terça Feira'
-            },
-            {
-                value: 'wednesday',
-                title: 'Quarta Feira'
-            },
-            {
-                value: 'thursday',
-                title: 'Quinta Feira'
-            },
-            {
-                value: 'friday',
-                title: 'Sexta Feira'
-            },
-            {
-                value: 'saturday',
-                title: 'Sabado'
-            },
-            {
-                value:'sunday',
-                title: 'Domingo'
-            }
-        ]);
+        this.daysOfWeek = Utils.getDaysOfWeek();
 
         this.activeRoute.params.subscribe(params => {
             if (params.hasOwnProperty("id")) {

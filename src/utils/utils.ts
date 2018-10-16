@@ -17,4 +17,37 @@ export default class Utils {
         }
         return obj;
     }
+
+    public static getDaysOfWeek() {
+        return [
+            {
+                value: 'monday',
+                title: 'Segunda Feira'
+            },
+            {
+                value: 'tuesday',
+                title: 'Terça Feira'
+            },
+            {
+                value: 'wednesday',
+                title: 'Quarta Feira'
+            },
+            {
+                value: 'thursday',
+                title: 'Quinta Feira'
+            },
+            {
+                value: 'friday',
+                title: 'Sexta Feira'
+            },
+            {
+                value: 'saturday',
+                title: 'Sabado'
+            },
+            {
+                value:'sunday',
+                title: 'Domingo'
+            }
+        ];
+    }
 }
