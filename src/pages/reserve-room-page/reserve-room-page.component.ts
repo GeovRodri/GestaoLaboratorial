@@ -21,7 +21,11 @@ export class ReserveRoomPageComponent {
         });
     }
 
-    search(data) {
-        $('#wizard a[href="#select"]').tab('show')
+    public search(data) {
+        $('#wizard a[href="#select"]').tab('show');
+    }
+
+    public toConfirm() {
+        $('#wizard a[href="#confirm"]').tab('show');
     }
 }
