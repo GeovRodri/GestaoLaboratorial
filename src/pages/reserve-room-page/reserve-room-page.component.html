@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="card-box">
+            <div class="card-box loading" [ngClass]="{'loading-active' : isLoading}">
                 <ul id="wizard" class="nav nav-pills navtab-bg nav-justified">
                     <li class="nav-item">
                         <a href="#search" aria-expanded="true" class="nav-link active">
@@ -41,17 +41,8 @@
                                 <div class="col-sm-4">
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
-                                            <label for="dayOfWeek" class="col-form-label">Dia da Semana</label>
-                                            <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek">
-                                                <option *ngFor="let day of daysOfWeek" value="{{ day.value }}">{{ day.title }}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            <label for="time" class="col-form-label">Apartir de:</label>
-                                            <input id="time" formControlName="startTime" class="form-control" type="time" name="time">
+                                            <label for="dayOfWeek" class="col-form-label">Data</label>
+                                            <input type="date" id="dayOfWeek" class="form-control" formControlName="date">
                                         </div>
                                     </div>
 
@@ -73,32 +64,15 @@
                                     </thead>-->
 
                                     <tbody>
-                                        <tr>
+                                        <tr *ngFor="let hour of hours; let i = index">
                                             <td>
                                                 <div class="checkbox checkbox-primary">
-                                                    <input id="checkbox1" type="checkbox">
-                                                    <label for="checkbox1"></label>
+                                                    <input id="checkbox-{{i}}" type="checkbox">
+                                                    <label for="checkbox-{{i}}"></label>
                                                 </div>
                                             </td>
-                                            <td>00:00 as 10:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="checkbox checkbox-primary">
-                                                    <input id="checkbox2" type="checkbox">
-                                                    <label for="checkbox2"></label>
-                                                </div>
-                                            </td>
-                                            <td>00:00 as 10:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="checkbox checkbox-primary">
-                                                    <input id="checkbox3" type="checkbox">
-                                                    <label for="checkbox3"></label>
-                                                </div>
-                                            </td>
-                                            <td>00:00 as 10:00</td>
+                                            <td> {{ hour.name }} </td>
+                                            <td>{{ hour.startTime }} ás {{ hour.endTime }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -122,6 +96,13 @@
                             tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
                         </p>
                     </div>
+                </div>
+
+                <div class="spinner">
+                    <svg width="40px" height="40px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                        <circle fill="none" stroke-width="5" stroke-linecap="round" cx="33" cy="33" r="30"
+                                class="circle"></circle>
+                    </svg>
                 </div>
             </div>
             <!-- end card-box -->

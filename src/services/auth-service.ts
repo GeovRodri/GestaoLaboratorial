@@ -71,4 +71,12 @@ export class AuthServiceProvider {
             });
         });
     }
+
+    getUserJWTToken(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.authstate.getIdToken(true).then((idToken) => {
+                resolve(idToken);
+            });
+        });
+    }
 }

@@ -21,6 +21,7 @@ import {ToastrServiceProvider} from "../services/toastr-service";
 import {CategoryService} from "../services/category-service";
 import {CategoriesPageComponent} from "../pages/categories/categories-page.component";
 import {CategoryPageComponent} from "../pages/category/category-page.component";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {CategoryPageComponent} from "../pages/category/category-page.component";
         AngularFireModule.initializeApp(environment.firebase),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
+        HttpClientModule,
         SweetAlert2Module.forRoot({
             buttonsStyling: false,
             customClass: 'modal-content',

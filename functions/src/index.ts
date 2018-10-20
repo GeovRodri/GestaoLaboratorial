@@ -19,9 +19,17 @@ exports.searchHours = functions.https.onRequest((req, res) => {
             });
 
             Promise.all(promises).then((results) => {
+                let list = [];
+
+                console.log('Resultados: ', results);
+                results.forEach((result) => {
+                    list = list.concat(result);
+                });
+
                 res.setHeader('content-type', 'application/json');
-                res.status(200).send(results);
+                res.status(200).send(list);
             }).catch((error) => {
+                console.log(error);
                 res.setHeader('content-type', 'application/json');
                 res.status(500).send({'message': 'Error in get laboratories.'});
             });
@@ -31,41 +39,46 @@ exports.searchHours = functions.https.onRequest((req, res) => {
 
 function searchHoursLaboratory(dayTimestamp, laboratoryId, laboratory) {
     return new Promise((resolve, reject) => {
+        const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        const dayOfWeek = daysOfWeek[moment(dayTimestamp).weekday()];
         const reservesPath = 'reserves/' + laboratoryId + '/' + dayTimestamp;
+
         admin.database().ref(reservesPath).once('value').then((reservesSnap) => {
             const reservesHours = [];
             const hours = [];
 
             const reserves = reservesSnap.val();
-            const reservesKeys = Object.keys(reserves);
-            // pegar dia da semana
-            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const dayOfWeek = daysOfWeek[moment(dayTimestamp).getDaysOfWeek()];
-
-            reservesKeys.forEach((reserveKey) => {
-                const reserve = reserves[reserveKey];
-                reservesHours.push(reserve.startTime);
-            });
+            if (reserves) {
+                const reservesKeys = Object.keys(reserves);
+                // pegar dia da semana
+                reservesKeys.forEach((reserveKey) => {
+                    const reserve = reserves[reserveKey];
+                    reservesHours.push(reserve.startTime);
+                });
+            }
 
             // pegando horario do dia e verificar se ele já não está reservado
+            console.log('Laboratorio: ', laboratory);
+            console.log('Dia da semana: ', dayOfWeek);
+            console.log('Horas reservadas: ', reservesHours);
             const operatingHours = laboratory.operatingHours[dayOfWeek];
-            const operatingHoursKeys = Object.keys(operatingHours);
+            if (operatingHours) {
+                const operatingHoursKeys = Object.keys(operatingHours);
 
-            operatingHoursKeys.forEach((operatingKey) => {
-                const operatingHour = operatingHours[operatingKey];
+                operatingHoursKeys.forEach((operatingKey) => {
+                    const operatingHour = operatingHours[operatingKey];
 
-                if (reservesHours.indexOf(operatingHour.startTime) === -1) {
-                    hours.push(operatingHour);
-                }
-            });
+                    if (reservesHours.indexOf(operatingHour.startTime) === -1) {
+                        operatingHour['laboratoryId'] = laboratoryId;
+                        operatingHour['name'] = laboratory.name;
 
-            const result = {
-                'laboratoryId': laboratoryId,
-                'name': laboratory.name,
-                'hours': hours
-            };
+                        console.log('Horas: ', operatingHour);
+                        hours.push(operatingHour);
+                    }
+                });
+            }
 
-            resolve(result);
+            resolve(hours);
         }).catch((error) => {
             reject(error);
         });
