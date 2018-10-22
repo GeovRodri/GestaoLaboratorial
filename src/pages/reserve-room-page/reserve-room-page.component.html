@@ -67,7 +67,7 @@
                                         <tr *ngFor="let hour of hours; let i = index">
                                             <td>
                                                 <div class="checkbox checkbox-primary">
-                                                    <input id="checkbox-{{i}}" type="checkbox">
+                                                    <input id="checkbox-{{i}}" type="checkbox" (change)="selectHour(hour, $event)">
                                                     <label for="checkbox-{{i}}"></label>
                                                 </div>
                                             </td>
@@ -77,24 +77,25 @@
                                     </tbody>
                                 </table>
 
-                                <button type="button" class="btn btn-primary" (click)="toConfirm()">Continuar</button>
+                                <button type="button" class="btn btn-primary" [disabled]="hoursSelected.length === 0" (click)="toConfirm()">Continuar</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="tab-pane" id="confirm">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-                            Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
-                            Nulla consequat massa quis enim.
-                        </p>
-                        <p>
-                            Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-                            rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.
-                            Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend
-                            tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
-                        </p>
+                        <div class="row justify-content-md-center">
+                            <div class="col-sm-4">
+                                <ul>
+                                    <li *ngFor="let hour of hoursSelected;">
+                                        <span>{{ hour.name }} - {{ hour.startTime }} ás {{ hour.endTime }}</span>
+                                    </li>
+                                </ul>
+
+                                <div align="right">
+                                    <button type="button" style="text-align: right;" class="btn btn-primary" (click)="save()">Confirmar</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

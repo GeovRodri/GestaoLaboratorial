@@ -70,4 +70,13 @@ export class LaboratoryService {
             });
         });
     }
+
+    reserveLaboratory(laboratoryId, initialDay, startTime): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const path = 'reserves/' + laboratoryId + '/' + initialDay;
+            this.afDb.list(path).push({'startTime': startTime}).then(() => {
+                resolve();
+            });
+        });
+    }
 }

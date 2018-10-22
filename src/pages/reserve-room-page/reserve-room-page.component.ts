@@ -5,6 +5,7 @@ declare var $: any;
 import * as moment from 'moment';
 import {LaboratoryService} from "../../services/laboratory-service";
 import swal from "sweetalert2";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-reserve-room-page',
@@ -17,8 +18,11 @@ export class ReserveRoomPageComponent {
     public searchFormGroup: FormGroup;
     public daysOfWeek: Array<any> = [];
     public hours: Array<any> = [];
+    public hoursSelected: Array<any> = [];
+    public startDay;
 
-    constructor(private formBuilder: FormBuilder, private laboratoryService: LaboratoryService) {
+    constructor(private formBuilder: FormBuilder, private laboratoryService: LaboratoryService,
+                private router: Router) {
         this.daysOfWeek = Utils.getDaysOfWeek();
         this.searchFormGroup = formBuilder.group({
             'date': [moment().format('YYYY-MM-DD')]
@@ -27,8 +31,8 @@ export class ReserveRoomPageComponent {
 
     public search(data) {
         this.isLoading = true;
-        let timestamp = moment(data.date).startOf('day').valueOf();
-        this.laboratoryService.searchLaboratories(timestamp).then((results: Array<any>) => {
+        this.startDay = moment(data.date).startOf('day').valueOf();
+        this.laboratoryService.searchLaboratories(this.startDay).then((results: Array<any>) => {
             this.isLoading = false;
             console.log(results);
             this.hours = results;
@@ -45,5 +49,33 @@ export class ReserveRoomPageComponent {
 
     public toConfirm() {
         $('#wizard a[href="#confirm"]').tab('show');
+    }
+
+    public selectHour(hour, event) {
+        if (event.target.checked) {
+            this.hoursSelected.push(hour);
+        } else {
+            const idx = this.hoursSelected.indexOf(hour);
+            this.hoursSelected.splice(idx, 1);
+        }
+    }
+
+    public save() {
+        let promises = [];
+
+        this.hoursSelected.forEach((hour) => {
+            promises.push(this.laboratoryService.reserveLaboratory(hour.laboratoryId, this.startDay, hour.startTime));
+        });
+
+        Promise.all(promises).then(() => {
+            $('#wizard a[href="#search"]').tab('show');
+            this.hoursSelected =[];
+            this.hours = [];
+            this.startDay = null;
+
+            this.router.navigate(['/']).then(() => {
+                swal({text: 'Laboratório(s) reservado(s) com sucesso!', type: 'success'});
+            });
+        });
     }
 }
