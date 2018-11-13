@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "aws_lambdas-executor",
+    "name": "aws_lambdas",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "zy043jlazi"
+  }
+}

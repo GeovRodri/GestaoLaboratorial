@@ -50,10 +50,10 @@ export class LaboratoryService {
 
     searchLaboratories(startDay): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.authService.getUserJWTToken().then(token => {
+            // this.authService.getUserJWTToken().then(token => {
                 const headers = new HttpHeaders({
                     'Content-Type': 'application/json',
-                    'Jwt-Token': token
+                    // 'Jwt-Token': token
                 });
 
                 let body = JSON.stringify({
@@ -64,10 +64,10 @@ export class LaboratoryService {
                 }, (err) => {
                     reject(err);
                 });
-            }).catch(error => {
-                console.log('Could not get user token: ', error);
-                reject();
-            });
+            // }).catch(error => {
+            //     console.log('Could not get user token: ', error);
+            //     reject();
+            // });
         });
     }
 

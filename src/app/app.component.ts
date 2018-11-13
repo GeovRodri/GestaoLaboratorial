@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {AuthServiceProvider} from "../services/auth-service";
+import {UsersService} from "../services/user-service";
 
 @Component({
     selector: 'app-root',
@@ -9,10 +10,9 @@ import {AuthServiceProvider} from "../services/auth-service";
 export class AppComponent {
 
     logged: Boolean = false;
-    isLoading: Boolean = true;
+    isLoading: Boolean = false;
 
-    constructor(private authService: AuthServiceProvider) {
-
+    constructor(private authService: AuthServiceProvider, private userService: UsersService) {
         this.authService.watchUser().subscribe((user) => {
             this.isLoading = false;
             this.logged = !!user;

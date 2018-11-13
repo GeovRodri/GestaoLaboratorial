@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {AuthServiceProvider} from "../../services/auth-service";
+import {UsersService} from "../../services/user-service";
 
 @Component({
   selector: 'app-logged-in-template',
@@ -10,7 +11,7 @@ export class LoggedInTemplateComponent {
 
     public isAdmin: boolean = false;
 
-    constructor(private authService: AuthServiceProvider) {
+    constructor(private authService: AuthServiceProvider, private userService: UsersService) {
         this.authService.isAdmin().then((isAdmin) => {
             this.isAdmin = !!isAdmin;
         }).catch((error) => {
@@ -19,6 +20,6 @@ export class LoggedInTemplateComponent {
     }
 
     logout() {
-        this.authService.logout();
+        this.userService.logout();
     }
 }
