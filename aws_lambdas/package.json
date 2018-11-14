@@ -2,7 +2,7 @@
   "name": "aws_lambdas",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "lambda.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.355.0",
     "aws-serverless-express": "^3.3.5",
+    "body-parser": "^1.18.3",
+    "claudia-api-builder": "^4.1.1",
     "cognito-express": "^2.0.12",
+    "cors": "^2.8.5",
     "express": "^4.16.4"
   }
 }

@@ -15,10 +15,10 @@ export class AdminLocalStorageService {
     }
 
     public setToken(token): any {
-        return localStorage.setItem('awsToken', token);
+        return localStorage.setItem('awsToken', JSON.stringify(token));
     }
 
     public setAccessToken(accessToken): any {
-        return localStorage.setItem('awsAccessToken', accessToken);
+        return localStorage.setItem('awsAccessToken', JSON.stringify(accessToken));
     }
 }

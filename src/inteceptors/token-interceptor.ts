@@ -1,41 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
 import 'rxjs/add/operator/do';
 import { AdminLocalStorageService } from '../services/admin-local-storage.service';
-import { ToastrServiceProvider } from "../services/toastr-service";
 import {AuthServiceProvider} from "../services/auth-service";
 
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-    constructor(public auth: AuthServiceProvider , private localStorage: AdminLocalStorageService,
-                private router: Router, private toastr: ToastrServiceProvider) {}
+    constructor(public auth: AuthServiceProvider , private localStorage: AdminLocalStorageService) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const authData = this.localStorage.getToken();
-        let requestItem = request;
-        if (authData) {
-            requestItem = request.clone({
-                headers: request.headers.set("Authorization",
-                    authData.jwtToken)
+        let authReq = request;
+
+        if (!!authData) {
+            authReq = request.clone({
+                setHeaders: {
+                    'Content-Type':  'application/json',
+                    'Authorization': authData.jwtToken
+                }
             });
         }
-        return next.handle(requestItem).do((event: HttpEvent<any>) => {
-            if (event instanceof HttpResponse) {
-                //letting it pass
-            }
-        }, (err: any) => {
-            if (err instanceof HttpErrorResponse) {
-                if (err.status === 401) {
-                    this.localStorage.deleteToken();
-                    this.toastr.showErrorToast("Sua sessão foi encerrada, realize o login novamente.", "Sessão expirada");
-                    this.auth.informLoggedUserToObservers(null);
-                    this.router.navigate(['/']);
-                }
-            }
-        });
+        return next.handle(authReq);
     }
 }

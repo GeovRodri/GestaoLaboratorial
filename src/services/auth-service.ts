@@ -43,7 +43,7 @@ export class AuthServiceProvider {
 
     public isAdmin() {
         return new Promise((resolve, reject) => {
-            resolve(false);
+            resolve(true);
             /*this.afDb.object('admins/' + this.authstate.uid).valueChanges().take(1).subscribe((result) => {
                 resolve(result);
             }, (error) => {

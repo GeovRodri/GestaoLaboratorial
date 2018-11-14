@@ -47,7 +47,8 @@ export class CategoryPageComponent {
                 this.toastrService.showSuccessToast('Categoria salva com sucesso!');
             });
         }).catch((error) => {
-            this.toastrService.showSuccessToast('Error ao salvar a categoria!');
+            console.log(error);
+            this.toastrService.showErrorToast('Error ao salvar a categoria!');
         });
     }
 }
