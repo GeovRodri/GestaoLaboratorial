@@ -53,15 +53,14 @@ export class LaboratoryService {
     searchLaboratories(startDay): Promise<any> {
         return new Promise((resolve, reject) => {
             // this.authService.getUserJWTToken().then(token => {
-                const headers = new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    // 'Jwt-Token': token
-                });
+            const httpOptions = {
+                //headers: this.authService.getHeaders()
+            };
 
                 let body = JSON.stringify({
                     'timestamp': startDay
                 });
-                this.httpClient.post('https://us-central1-gestaolaboratorial.cloudfunctions.net/searchHours', body, {headers: headers}).take(1).subscribe((result) => {
+                this.httpClient.post('https://us-central1-gestaolaboratorial.cloudfunctions.net/searchHours', body, httpOptions).take(1).subscribe((result) => {
                     resolve(result);
                 }, (err) => {
                     reject(err);

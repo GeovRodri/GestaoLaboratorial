@@ -8,7 +8,7 @@ const cognitoExpress = new CognitoExpress({
 });
 
 function validateAdmin(req, res, next) {
-    let accessTokenFromClient = req.headers.authorization;
+    const accessTokenFromClient = req.headers.authorization;
 
     if (!accessTokenFromClient) return res.status(401).send("Access Token missing from header");
 

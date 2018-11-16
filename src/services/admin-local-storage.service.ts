@@ -21,4 +21,8 @@ export class AdminLocalStorageService {
     public setAccessToken(accessToken): any {
         return localStorage.setItem('awsAccessToken', JSON.stringify(accessToken));
     }
+
+    public getAccessToken(): any{
+        return JSON.parse(localStorage.getItem('awsAccessToken'));
+    }
 }

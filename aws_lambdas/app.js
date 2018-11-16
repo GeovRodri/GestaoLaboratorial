@@ -5,9 +5,8 @@ const app = express();
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
 const cognitoValidator = require('./validate-admin');
-router.use(cognitoValidator);
+
 router.use(cors());
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -15,9 +14,11 @@ router.use(awsServerlessExpressMiddleware.eventContext());
 
 const AWS = require('aws-sdk');
 const uuid = require('uuid');
-const documentClient = new AWS.DynamoDB.DocumentClient();
-
 const port = process.env.PORT || 8080;
+
+AWS.config.loadFromPath('./config.json');
+router.use(cognitoValidator);
+const documentClient = new AWS.DynamoDB.DocumentClient();
 
 router.get('/', function (req, res) {
     res.json({'message': 'Usuario Autenticado'});
@@ -26,8 +27,7 @@ router.get('/', function (req, res) {
 router.post('/category', function (req, res) {
     const params = {
         Item : {
-            "id" : uuid.v1(),
-            "Name" : 'Minha categoria'
+            "$key": req.body.$key
         },
         TableName : 'categories'
     };
@@ -41,6 +41,10 @@ router.get('/category', function (req, res) {
         TableName : 'categories'
     };
     documentClient.scan(params, function(err, data){
+        if (err) {
+            console.log(err);
+        }
+
         res.json(data.Items);
     });
 });

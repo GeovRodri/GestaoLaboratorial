@@ -17,9 +17,8 @@ import {ToastrServiceProvider} from "../services/toastr-service";
 import {CategoryService} from "../services/category-service";
 import {CategoriesPageComponent} from "../pages/categories/categories-page.component";
 import {CategoryPageComponent} from "../pages/category/category-page.component";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
 import {AdminLocalStorageService} from "../services/admin-local-storage.service";
-import {TokenInterceptor} from "../inteceptors/token-interceptor";
 import {UsersService} from "../services/user-service";
 
 
@@ -55,12 +54,7 @@ import {UsersService} from "../services/user-service";
         ToastrServiceProvider,
         CategoryService,
         AdminLocalStorageService,
-        UsersService,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptor,
-            multi: true
-        },
+        UsersService
     ],
     bootstrap: [AppComponent]
 })
