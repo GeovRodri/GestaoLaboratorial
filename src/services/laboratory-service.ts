@@ -66,39 +66,36 @@ export class LaboratoryService {
                 resolve(result);
             }, (err) => {
                 reject(err);
-            })
+            });
         });
     }
 
     searchLaboratories(startDay): Promise<any> {
         return new Promise((resolve, reject) => {
-            // this.authService.getUserJWTToken().then(token => {
-            const httpOptions = {
-                //headers: this.authService.getHeaders()
-            };
+            const httpOptions = this.authService.getOptions();
 
-                let body = JSON.stringify({
-                    'timestamp': startDay
-                });
-                this.httpClient.post('https://us-central1-gestaolaboratorial.cloudfunctions.net/searchHours', body, httpOptions).take(1).subscribe((result) => {
-                    resolve(result);
-                }, (err) => {
-                    reject(err);
-                });
-            // }).catch(error => {
-            //     console.log('Could not get user token: ', error);
-            //     reject();
-            // });
+            this.httpClient.get(environment.apiUrl + `/laboratory/search-hours/${startDay}`, httpOptions).take(1).subscribe((result) => {
+                resolve(result);
+            }, (err) => {
+                reject(err);
+            });
         });
     }
 
     reserveLaboratory(laboratoryId, initialDay, startTime): Promise<any> {
         return new Promise((resolve, reject) => {
-            const path = 'reserves/' + laboratoryId + '/' + initialDay;
-            resolve();
-            /*this.afDb.list(path).push({'startTime': startTime}).then(() => {
-                resolve();
-            });*/
+            const httpOptions = this.authService.getOptions();
+            const body = JSON.stringify({
+                "laboratoryId": laboratoryId,
+                "initialDay": initialDay,
+                "startTime": startTime
+            });
+
+            this.httpClient.post(environment.apiUrl + `/reserve`, body, httpOptions).take(1).subscribe((result) => {
+                resolve(result);
+            }, (err) => {
+                reject(err);
+            });
         });
     }
 }

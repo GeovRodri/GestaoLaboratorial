@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const cognitoValidator = require('../validate-admin');
 const uuidv4 = require('uuid/v4');
+const moment = require('moment');
 
 const documentClient = new AWS.DynamoDB.DocumentClient();
 AWS.config.loadFromPath('./config.json');
@@ -112,6 +113,87 @@ router.put('/:id', function (req, res) {
         }
 
         res.json({'message': 'Laboratório alterado com sucesso!'});
+    });
+});
+
+router.get('/search-hours/:timestamp', function (req, res) {
+    const dayTimestamp = Number(req.params.timestamp);
+    const laboratoriesParams = {
+        TableName : 'laboratories'
+    };
+    documentClient.scan(laboratoriesParams, function(err, data){
+        if (err) {
+            console.log(err);
+        }
+
+        const searchHoursLaboratory = (dayTimestamp, laboratory) => {
+            return new Promise((resolve, reject) => {
+                const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                const dayOfWeek = daysOfWeek[moment(dayTimestamp).utc(true).weekday()];
+
+                const reservesParams = {
+                    TableName : 'reserves',
+                    Key: {
+                        "laboratoryId": laboratory.$key,
+                        "initialDay": dayTimestamp
+                    },
+                };
+                documentClient.scan(reservesParams, function(err, data){
+                    if (err) {
+                        console.log(err);
+                    }
+
+                    const reservesHours = [];
+                    const hours = [];
+                    const reserves = data.Items;
+                    if (reserves) {
+                        // pegar dia da semana
+                        reserves.forEach((reserve) => {
+                            reservesHours.push(reserve.startTime);
+                        });
+                    }
+                    // pegando horario do dia e verificar se ele já não está reservado
+                    console.log('Laboratorio: ', laboratory);
+                    console.log('Dia da semana: ', dayOfWeek);
+                    console.log('Horas reservadas: ', reservesHours);
+                    const operatingHours = laboratory.operatingHours[dayOfWeek];
+                    if (operatingHours) {
+                        const operatingHoursKeys = Object.keys(operatingHours);
+                        operatingHoursKeys.forEach((operatingKey) => {
+                            const operatingHour = operatingHours[operatingKey];
+                            if (reservesHours.indexOf(operatingHour.startTime) === -1) {
+                                operatingHour['laboratoryId'] = laboratory.$key;
+                                operatingHour['name'] = laboratory.name;
+                                console.log('Horas: ', operatingHour);
+                                hours.push(operatingHour);
+                            }
+                        });
+                    }
+                    resolve(hours);
+                });
+            });
+        };
+
+        const promises = [];
+        const laboratories = data.Items;
+        laboratories.forEach((laboratory) => {
+            promises.push(searchHoursLaboratory(dayTimestamp, laboratory));
+        });
+
+        Promise.all(promises).then((results) => {
+            let list = [];
+            console.log('Resultados: ', results);
+            results.forEach((result) => {
+                list = list.concat(result);
+            });
+
+            res.setHeader('content-type', 'application/json');
+            res.status(200).send(list);
+        }).catch((error) => {
+            console.log(error);
+            res.setHeader('content-type', 'application/json');
+            res.status(500).send({ 'message': 'Error in get laboratories.' });
+        });
     });
 });
 

@@ -31,7 +31,7 @@ export class ReserveRoomPageComponent {
 
     public search(data) {
         this.isLoading = true;
-        this.startDay = moment(data.date).startOf('day').valueOf();
+        this.startDay = moment(data.date).utc(true).startOf('day').valueOf();
         this.laboratoryService.searchLaboratories(this.startDay).then((results: Array<any>) => {
             this.isLoading = false;
             console.log(results);
