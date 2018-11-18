@@ -14,10 +14,15 @@ export class AuthServiceProvider {
     userObservers: Array<Subscription> = [];
 
     constructor(private localStorage: AdminLocalStorageService) {
+        const accessKey = localStorage.getToken();
+        if (accessKey) {
+            this.informLoggedUserToObservers(accessKey);
+        }
+
         this.userObservable = Observable.create((observer) => {
             this.userObservers.push(observer);
             if (this.authstate) {
-                const user = (this.authstate != null) ? this.authstate.email : null;
+                const user = this.authstate ? this.authstate : null;
                 observer.next(user);
             }
         });
