@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
-import Utils from "../utils/utils";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {AuthServiceProvider} from "./auth-service";
+import {environment} from "../environments/environment";
 
 @Injectable()
 export class LaboratoryService {
@@ -11,43 +10,64 @@ export class LaboratoryService {
 
     saveLaboratory(data): Promise<any> {
         return new Promise((resolve, reject) => {
-            resolve();
-            /*this.afDb.list('laboratories').push(data).then(() => {
-                resolve();
-            });*/
+            const httpOptions = this.authService.getOptions();
+            let body = JSON.stringify(data);
+
+            this.httpClient.post(environment.apiUrl + '/laboratory', body, httpOptions).take(1).subscribe((result) => {
+                resolve(result);
+            }, (err) => {
+                reject(err);
+            })
         });
     }
 
     getLaboratories(): Promise<any> {
         return new Promise((resolve, reject) => {
-            resolve();
-            /*this.afDb.list('laboratories/').snapshotChanges().take(1).map(Utils.snapshotActionToData)
-                .subscribe((results) => {
-                resolve(results);
-            }, (error) => {
-                reject(error);
-            });*/
+            const httpOptions = this.authService.getOptions();
+
+            this.httpClient.get(environment.apiUrl + '/laboratory', httpOptions).take(1).subscribe((result) => {
+                resolve(result);
+            }, (err) => {
+                reject(err);
+            });
         });
     }
 
     getLaboratory(key): Promise<any> {
         return new Promise((resolve, reject) => {
-            resolve();
-            /*this.afDb.object('laboratories/' + key).snapshotChanges().take(1).map(Utils.snapshotActionObjectToData)
-                .subscribe((result) => {
-                    resolve(result);
-                }, (error) => {
-                    reject(error);
-                });*/
+            const httpOptions = this.authService.getOptions();
+
+            this.httpClient.get(environment.apiUrl + `/laboratory/${key}`, httpOptions).take(1).subscribe((result) => {
+                resolve(result);
+            }, (err) => {
+                reject(err);
+            });
         });
     }
 
     removeLaboratory(key): Promise<any> {
-        return new Promise((resolve, reject) => resolve());// this.afDb.object('laboratories/' + key).remove() ;
+        return new Promise((resolve, reject) => {
+            const httpOptions = this.authService.getOptions();
+
+            this.httpClient.delete(environment.apiUrl + `/laboratory/${key}`, httpOptions).take(1).subscribe((result) => {
+                resolve(result);
+            }, (err) => {
+                reject(err);
+            });
+        });
     }
 
     editLaboratory(key, data): Promise<any> {
-        return new Promise((resolve, reject) => resolve());// this.afDb.object('laboratories/' + key).update(data);
+        return new Promise((resolve, reject) => {
+            const httpOptions = this.authService.getOptions();
+            let body = JSON.stringify(data);
+
+            this.httpClient.put(environment.apiUrl + `/laboratory/${key}`, body, httpOptions).take(1).subscribe((result) => {
+                resolve(result);
+            }, (err) => {
+                reject(err);
+            })
+        });
     }
 
     searchLaboratories(startDay): Promise<any> {

@@ -9,5 +9,5 @@ export const environment = {
         secretAccessKey: 'n5DEju2nQlSaUAM8lrzKEPERui2Im6ThwYdmE1+R',
         region: 'us-east-1'
     },
-    apiUrl: 'https://zy043jlazi.execute-api.us-east-1.amazonaws.com/latest'
+    apiUrl: 'https://f77svegzki.execute-api.us-east-1.amazonaws.com/latest'
 };

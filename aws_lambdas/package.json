@@ -16,6 +16,7 @@
     "claudia-api-builder": "^4.1.1",
     "cognito-express": "^2.0.12",
     "cors": "^2.8.5",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "uuid": "^3.3.2"
   }
 }

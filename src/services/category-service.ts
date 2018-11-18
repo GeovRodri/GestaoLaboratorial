@@ -1,25 +1,16 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {environment} from "../environments/environment";
 import {AuthServiceProvider} from "./auth-service";
-import {AdminLocalStorageService} from "./admin-local-storage.service";
 
 @Injectable()
 export class CategoryService {
 
-    constructor(private httpClient: HttpClient, private authService: AuthServiceProvider,
-                private localStorage: AdminLocalStorageService) {}
+    constructor(private httpClient: HttpClient, private authService: AuthServiceProvider) {}
 
     saveCategory(data): Promise<any> {
         return new Promise((resolve, reject) => {
-            const authData = this.localStorage.getToken();
-
-            const httpOptions = {
-                headers: new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    'Authorization': authData.jwtToken
-                })
-            };
+            const httpOptions = this.authService.getOptions();
 
             let body = JSON.stringify({
                 '$key': data.name
@@ -35,14 +26,7 @@ export class CategoryService {
 
     getCategories(): Promise<any> {
         return new Promise((resolve, reject) => {
-            const authData = this.localStorage.getToken();
-
-            const httpOptions = {
-                headers: new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    'Authorization': authData.jwtToken
-                })
-            };
+            const httpOptions = this.authService.getOptions();
 
             this.httpClient.get(environment.apiUrl + '/category', httpOptions).take(1).subscribe((result) => {
                 resolve(result);
@@ -54,7 +38,9 @@ export class CategoryService {
 
     getCategory(key): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.httpClient.get(environment.apiUrl + `/category/${key}`).take(1).subscribe((result) => {
+            const httpOptions = this.authService.getOptions();
+
+            this.httpClient.get(environment.apiUrl + `/category/${key}`, httpOptions).take(1).subscribe((result) => {
                 resolve(result);
             }, (err) => {
                 reject(err);
@@ -64,12 +50,13 @@ export class CategoryService {
 
     removeCategory(key): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.httpClient.delete(environment.apiUrl + `/category/${key}`).take(1).subscribe((result) => {
+            const httpOptions = this.authService.getOptions();
+
+            this.httpClient.delete(environment.apiUrl + `/category/${key}`, httpOptions).take(1).subscribe((result) => {
                 resolve(result);
             }, (err) => {
                 reject(err);
             });
         });
     }
-
 }

@@ -3,6 +3,7 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/map';
 import {AdminLocalStorageService} from "./admin-local-storage.service";
 import {Observable, Subscription} from "rxjs";
+import {HttpHeaders} from "@angular/common/http";
 
 @Injectable()
 export class AuthServiceProvider {
@@ -48,5 +49,16 @@ export class AuthServiceProvider {
                 reject(error);
             });*/
         });
+    }
+
+    public getOptions() {
+        const authData = this.localStorage.getToken();
+
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': authData.jwtToken
+            })
+        };
     }
 }

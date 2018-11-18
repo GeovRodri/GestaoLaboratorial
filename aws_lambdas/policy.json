@@ -1,0 +1,16 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1542558003751",
+            "Action": "dynamodb:*",
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:dynamodb:us-east-1:751269794502:table/laboratories",
+                "arn:aws:dynamodb:us-east-1:751269794502:table/categories",
+                "arn:aws:dynamodb:us-east-1:751269794502:table/reserves",
+                "arn:aws:dynamodb:us-east-1:751269794502:table/admin"
+            ]
+        }
+    ]
+}
