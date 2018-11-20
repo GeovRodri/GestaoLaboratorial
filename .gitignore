@@ -43,3 +43,4 @@ testem.log
 .DS_Store
 Thumbs.db
 /functions/node_modules
+/aws_lambdas/node_modules

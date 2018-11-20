@@ -1,27 +1,19 @@
 # GestaoLaboratorial
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
+Este projeto foi realizado inicialmente para a materia de Qualidade e teste de software e foram utilizadas a suite de serviços do firebase. Para a matéria de tópicos avançados em computação esse projeto foi migrado para a AWS, utilizando os serviços: Amazon Cognito, Amazon Dynamodb, Amazon Lambda e Amazon S3. 
 
-## Development server
+**Atenção, atualmente o projeto está configurado para utilizar a minha conta da AWS.**
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Antes de realizar qualquer coisa na aplicação angular tem que instalar as suas depedencias utilizando o `npm install`.
 
-## Code scaffolding
+## Para rodar a aplicação localmente
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Rode o comando o  `ng serve` e vá até `http://localhost:4200/`.
 
-## Build
+## Para gerar a build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Rode o comando `ng build` para realizar a build e será gerada a pasta `dist/` com os arquivos estaticos. Esses arquivos são os que vão ser enviados para o S3.
 
-## Running unit tests
+## Para subir as functions no lambda
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Vá até a pasta aws_lambdas `cd aws_lambdas`, instale o claudia `npm install claudia` e depois rode o comando `claudia create --handler lambda.handler --deploy-proxy-api --region us-east-1 --policies .\policy.json` para subir uma nova function. E para realizar a atualização basta dar um `claudia update`. Tem a opção de rodar as functions localmente também, para isso tem que instalar as depedencias utilizando o `npm install` e depois `node .\app.js`.
